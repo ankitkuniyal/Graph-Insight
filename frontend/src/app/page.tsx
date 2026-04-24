@@ -244,7 +244,6 @@ export default function Home() {
                             el.style.color = '#10b981'; // green
                             setTimeout(() => el.style.color = 'var(--text-secondary)', 1000);
                           }}
-                          title="Copy JSON to clipboard"
                         />
                       </div>
                     </div>
