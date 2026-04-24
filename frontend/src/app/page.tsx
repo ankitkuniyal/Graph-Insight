@@ -37,6 +37,7 @@ export default function Home() {
   const [results, setResults] = useState<ApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'visual' | 'json'>('visual');
+  const [showToast, setShowToast] = useState(false);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -239,7 +240,9 @@ export default function Home() {
                           onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
                           onClick={(e) => {
                             navigator.clipboard.writeText(JSON.stringify(results, null, 2));
-                            // Optional: could add toast here, but simple visual feedback works
+                            setShowToast(true);
+                            setTimeout(() => setShowToast(false), 2000);
+                            
                             const el = e.currentTarget;
                             el.style.color = '#10b981'; // green
                             setTimeout(() => el.style.color = 'var(--text-secondary)', 1000);
@@ -279,6 +282,37 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      <AnimatePresence>
+        {showToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: 20, x: '-50%' }}
+            style={{
+              position: 'fixed',
+              bottom: '2rem',
+              left: '50%',
+              background: 'rgba(24, 24, 27, 0.8)',
+              backdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              padding: '0.75rem 1.5rem',
+              borderRadius: '12px',
+              color: '#fff',
+              fontSize: '0.9rem',
+              fontWeight: 500,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.4)',
+              zIndex: 1000,
+            }}
+          >
+            <CheckCircle2 size={18} color="#10b981" />
+            JSON copied to clipboard
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
