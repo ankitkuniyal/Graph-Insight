@@ -237,7 +237,7 @@ export default function Home() {
                           style={{ cursor: 'pointer', transition: 'color 0.2s' }}
                           onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
                           onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
-                          onClick={() => {
+                          onClick={(e) => {
                             navigator.clipboard.writeText(JSON.stringify(results, null, 2));
                             // Optional: could add toast here, but simple visual feedback works
                             const el = e.currentTarget;
