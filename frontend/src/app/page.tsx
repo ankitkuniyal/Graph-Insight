@@ -50,7 +50,7 @@ export default function Home() {
         const edges = input.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
         parsedInput = { data: edges };
       }
-      const res = await fetch('http://localhost:3001/bfhl', {
+      const res = await fetch('https://graph-insight-rk97.vercel.app/bfhl', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(parsedInput),
@@ -229,7 +229,24 @@ export default function Home() {
                   <motion.div className="glass" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem' }}>
                       <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Response from POST /bfhl</span>
-                      <span className="badge badge-success">200 OK</span>
+                      <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                        <span className="badge badge-success">200 OK</span>
+                        <Copy 
+                          size={16} 
+                          color="var(--text-secondary)" 
+                          style={{ cursor: 'pointer', transition: 'color 0.2s' }}
+                          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
+                          onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
+                          onClick={() => {
+                            navigator.clipboard.writeText(JSON.stringify(results, null, 2));
+                            // Optional: could add toast here, but simple visual feedback works
+                            const el = e.currentTarget;
+                            el.style.color = '#10b981'; // green
+                            setTimeout(() => el.style.color = 'var(--text-secondary)', 1000);
+                          }}
+                          title="Copy JSON to clipboard"
+                        />
+                      </div>
                     </div>
                     <pre style={{ color: 'var(--text-primary)', fontSize: '0.85rem', overflowX: 'auto', fontFamily: 'Fira Code, monospace', lineHeight: '1.5' }}>
                       {JSON.stringify(results, null, 2)}
